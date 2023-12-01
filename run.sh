@@ -1,1 +1,1 @@
-python3 main.py
+pytest --html=report.html --self-contained-html
