@@ -21,10 +21,9 @@ class TestScenarios(TestCase):
     within the Employee System Managemenet Software.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls.wd = WebDriver()
-        cls.wd.driver.get(APP_URL)
+    def setUp(self) -> None:
+        self.wd = WebDriver()
+        self.wd.driver.get(APP_URL)
 
     def test_scenario_001(self) -> None:
         """
@@ -351,6 +350,5 @@ class TestScenarios(TestCase):
     def _to_date_first(self, str_date: str) -> str:
         return parse(str_date, yearfirst=True).strftime('%d/%m/%Y')
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.wd.driver.close()
+    def tearDown(self) -> None:
+        self.wd.driver.close()
