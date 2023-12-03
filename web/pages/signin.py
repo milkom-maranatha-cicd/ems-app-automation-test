@@ -69,6 +69,8 @@ class SignInPage:
         """
         Returns label of the button login.
         """
+        # Text is obtained by using the `.get_attribute` method
+        # due to the type of login button is HTML input element
         return self.btn_login.get_attribute('value')
 
     @property
@@ -115,7 +117,7 @@ class SignInPage:
         # Redirect to dashboard page
         return DashboardPage(self.wd)
 
-    def _is_login_success(self):
+    def _is_login_success(self) -> bool:
         """
         Returns `True` if login is success.
         """
