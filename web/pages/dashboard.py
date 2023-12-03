@@ -1,5 +1,6 @@
 import time
 
+from dateutil.parser import parse
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -164,13 +165,25 @@ class DashboardPage:
         if not expected_data:
             raise ValueError('Expected data can\'t be empty or none.')
 
+        # Convert expected salary into USD
+        expected_salary = float(expected_data['salary'])
+        if expected_salary.is_integer():
+            str_expected_salary = '${:,.0f}'.format(expected_salary)
+        else:
+            str_expected_salary = '${:,.2f}'.format(expected_salary)
+
+        # Convert date format into `YYYY-MM-DD`
+        expected_date = parse(expected_data['date'], dayfirst=True)\
+            .strftime('%Y-%m-%d')
+
+        # Find expected data within the list
         for item in self.table_dataset:
             if bool(
                 item['first_name'] == expected_data['first_name'] and
                 item['last_name'] == expected_data['last_name'] and
                 item['email'] == expected_data['email'] and
-                item['salary'] == expected_data['salary'] and
-                item['date'] == expected_data['date']
+                item['salary'] == str_expected_salary and
+                item['date'] == expected_date
             ):
                 return
 
