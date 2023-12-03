@@ -93,6 +93,9 @@ class DashboardPage:
         """
         Returns Python dataset of the table employee.
         """
+        if self._is_table_empty():
+            return []
+
         return [
             {
                 'no': r.find_element(By.XPATH, './/td[1]').text,
