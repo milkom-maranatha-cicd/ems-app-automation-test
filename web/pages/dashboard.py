@@ -7,6 +7,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from typing import List, Dict
 
 from web.driver import WebDriver
+from web.modals.basic import BasicModal
 from web.modals.confirmation import ConfirmationModal
 from web.utils import (
     visibility_of_element_located,
@@ -223,9 +224,60 @@ class DashboardPage:
         modal.btn_confirm.click()
 
         # Wait approximately for one second (until animation is completed)
-        # And then redirect to dashboard page
+        # And then redirect to sign in page
         time.sleep(1)
         return SignInPage(self.wd)
+
+    def run_edit_data(self, row_number: int) -> None:
+        """
+        Edit data on the specific row number.
+        """
+        from web.pages import EditEmployeePage
+
+        dataset_size = len(self.table_dataset)
+        if row_number < 1 or row_number > dataset_size:
+            raise ValueError('Invalid row number.')
+
+        row = self.tabel_rows[row_number - 1]
+        btn_edit = row.find_element(By.XPATH, './/td[7]/button')
+        btn_edit.click()
+
+        # Wait approximately for one second (until animation is completed)
+        # And then redirect to edit employee page
+        time.sleep(1)
+        return EditEmployeePage(self.wd)
+
+    def run_delete_data(self, row_number: int) -> Dict:
+        """
+        Delete data on the specific row number and
+        returns the deleted data.
+        """
+        dataset_size = len(self.table_dataset)
+        if row_number < 1 or row_number > dataset_size:
+            raise ValueError('Invalid row number.')
+
+        to_be_deleted = self.table_dataset[row_number - 1]
+
+        # Delete employee
+        row = self.tabel_rows[row_number - 1]
+        btn_delete = row.find_element(By.XPATH, './/td[8]/button')
+        btn_delete.click()
+
+        # Confirms deletion
+        modal = ConfirmationModal(self.wd)
+        time.sleep(1)
+        modal.btn_confirm.click()
+
+        # Check response message
+        if not self._is_delete_success():
+            raise ValueError(
+                f'Row number {row_number} can\'t be deleted!'
+            )
+
+        # Wait approximately for one second (until animation is completed)
+        time.sleep(1)
+
+        return to_be_deleted
 
     def _is_table_empty(self) -> bool:
         """
@@ -237,3 +289,12 @@ class DashboardPage:
             return False
 
         return True
+
+    def _is_delete_success(self) -> bool:
+        """
+        Returns `True` if login is success.
+        """
+        modal = BasicModal(self.wd)
+        return bool(
+            modal.label_title == 'Deleted!'
+        )
