@@ -5,7 +5,6 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from web.driver import WebDriver
 from web.modals.basic import BasicModal
-from web.pages import DashboardPage
 from web.utils import visibility_of_element_located
 
 
@@ -99,12 +98,14 @@ class SignInPage:
         if self.label_btn_login != 'Login':
             raise ValueError('Incorrect label for the login button.')
 
-    def run_login(self, username: str, password: str) -> DashboardPage:
+    def run_login(self, username: str, password: str) -> any:
         """
         Login to the Employee Management System app
         with valid credential.
         """
-        # Login scenario
+        from web.pages import DashboardPage
+
+        # Fills the login form
         self.input_email.send_keys(username)
         self.input_password.send_keys(password)
         self.btn_login.click()
