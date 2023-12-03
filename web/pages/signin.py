@@ -1,3 +1,4 @@
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -114,7 +115,9 @@ class SignInPage:
                 'Unable to open dashboard page. Login failed!'
             )
 
-        # Redirect to dashboard page
+        # Wait approximately for one second (until animation is completed)
+        # And then redirect to dashboard page
+        time.sleep(1)
         return DashboardPage(self.wd)
 
     def _is_login_success(self) -> bool:
