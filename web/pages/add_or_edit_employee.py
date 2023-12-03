@@ -9,7 +9,7 @@ from web.modals.basic import BasicModal
 from web.utils import visibility_of_element_located
 
 
-class AddEmployeePage:
+class AddOrEditEmployeePage:
 
     def __init__(self, wd: WebDriver) -> None:
         self.wd = wd
