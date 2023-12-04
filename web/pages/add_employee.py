@@ -54,12 +54,15 @@ class AddEmployeePage(FormEmployee):
         """
         Assert add employee page properties.
         """
+        print('\n> Assert add new employee page title...')
         if self.label_title != 'Add Employee':
             raise ValueError("Incorrect page's title.")
 
+        print('> Assert label of the add button...')
         if self.label_btn_add != 'Add':
             raise ValueError('Incorrect label for the add button.')
 
+        print('> Assert label of the cancel button...')
         if self.label_btn_cancel != 'Cancel':
             raise ValueError('Incorrect label for the cancel button.')
 
@@ -80,18 +83,18 @@ class AddEmployeePage(FormEmployee):
         """
         from web.pages import DashboardPage
 
-        # Fills the new employee form
+        print('\n> Filling the add new employee form...')
         self.input_first_name.send_keys(data['first_name'])
         self.input_last_name.send_keys(data['last_name'])
         self.input_email.send_keys(data['email'])
         self.input_salary.send_keys(data['salary'])
         self.input_date.send_keys(data['date'])
 
-        # Save data
+        print('> Creating a new employee...')
         time.sleep(1)
         self.btn_add.click()
 
-        # Check response message
+        print('> Check create response...')
         if not self._is_add_success():
             raise ValueError(
                 'Employee data is invalid!'
@@ -99,14 +102,26 @@ class AddEmployeePage(FormEmployee):
 
         # Wait approximately for one second (until animation is completed)
         # And then redirect to dashboard page
+        print('> Create success. Redirecting to the dashboard page...')
         time.sleep(1)
         return DashboardPage(self.wd)
 
     def run_cancel(self) -> any:
         """
         Cancel operation to add a new employee.
+
+        This method returns the dashboard page instance.
         """
+        from web.pages import DashboardPage
+
+        print('\n> Canceling action edit employee...')
         self.btn_cancel.click()
+
+        # Wait approximately for one second (until animation is completed)
+        # And then redirect to dashboard page
+        print('> Redirecting to the dashboard page...')
+        time.sleep(1)
+        return DashboardPage(self.wd)
 
     def _is_add_success(self) -> bool:
         """
