@@ -69,12 +69,16 @@ class TestScenario002(TestCase):
             self.assertCountEqual(actual_data, expected_data)
 
         # Open add employee page
-        dashboard_page.btn_add.click()
+        add_employee_page: AddEmployeePage = dashboard_page.run_add_data()
 
-        add_employee_page = AddEmployeePage(self.wd)
-        add_employee_page.assert_properties()
+        # Assert properties of the add employee page
+        # i.e. (page title, labels, and text buttons)
+        try:
+            add_employee_page.assert_properties()
+        except ValueError as err:
+            self.fail(f'Add Employee Page Assertion Failed: {str(err)}')
 
-        # Add new employee
+        # Save new employee
         new_employee = {
             'first_name': 'Added',
             'last_name': 'New Employee',
