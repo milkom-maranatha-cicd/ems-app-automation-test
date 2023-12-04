@@ -86,15 +86,19 @@ class SignInPage:
         """
         Assert sign in page properties.
         """
+        print('\n> Assert sign in page title...')
         if self.label_title != 'Admin Login':
             raise ValueError("Incorrect page's title.")
 
+        print('> Assert label of the email input field...')
         if self.label_email != 'Email':
             raise ValueError('Incorrect label for the email input field.')
 
+        print('> Assert label of the password input field...')
         if self.label_password != 'Password':
             raise ValueError('Incorrect label for the password input field.')
 
+        print('> Assert label of the sign in button...')
         if self.label_btn_login != 'Login':
             raise ValueError('Incorrect label for the login button.')
 
@@ -102,15 +106,17 @@ class SignInPage:
         """
         Login to the Employee Management System app
         with valid credential.
+
+        This method returns the dashboard page instance.
         """
         from web.pages import DashboardPage
 
-        # Fills the login form
+        print('\n> Filling the login form...')
         self.input_email.send_keys(username)
         self.input_password.send_keys(password)
         self.btn_login.click()
 
-        # Check response message
+        print('> Check login response...')
         if not self._is_login_success():
             raise PermissionError(
                 'Unable to open dashboard page. Login failed!'
@@ -118,6 +124,7 @@ class SignInPage:
 
         # Wait approximately for one second (until animation is completed)
         # And then redirect to dashboard page
+        print('> Login success. Redirecting to the dashboard page...')
         time.sleep(1)
         return DashboardPage(self.wd)
 
