@@ -4,8 +4,12 @@ from dateutil.parser import parse
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from typing import List, Dict
+from typing import Dict, List, Tuple
 
+from web.converters import (
+    to_date_first,
+    usd_salary_to_number,
+)
 from web.driver import WebDriver
 from web.modals.basic import BasicModal
 from web.modals.confirmation import ConfirmationModal
@@ -114,12 +118,15 @@ class DashboardPage:
         """
         Assert dashboard page properties.
         """
+        print('\n> Assert dashboard page title...')
         if self.label_title != 'Employee Management Software':
             raise ValueError('Incorrect page\'s title.')
 
+        print('> Assert label of add employee button...')
         if self.label_btn_add != 'Add Employee':
             raise ValueError('Incorrect label for the add employee button.')
 
+        print('> Assert label of logout button...')
         if self.label_btn_logout != 'Logout':
             raise ValueError('Incorrect label for the logout button.')
 
@@ -127,6 +134,7 @@ class DashboardPage:
         """
         Assert content of the table employee's headers.
         """
+        print('\n> Assert header of the table employee...')
         if self.tabel_headers != [
             'No.', 'First Name', 'Last Name',
             'Email', 'Salary', 'Date', 'Actions'
@@ -137,6 +145,7 @@ class DashboardPage:
         """
         Assert content of the table employee is empty.
         """
+        print('\n> Assert content of the table employee when its empty...')
         if not self._is_table_empty():
             raise ValueError('Table employee is not empty.')
 
@@ -163,6 +172,7 @@ class DashboardPage:
         }
         ```
         """
+        print('\n> Assert content of the table employee contains some data...')
         if not expected_data:
             raise ValueError('Expected data can\'t be empty or none.')
 
@@ -212,71 +222,99 @@ class DashboardPage:
         """
         Login to the Employee Management System app
         with valid credential.
+
+        This method returns the sign in page instance.
         """
         from web.pages import SignInPage
 
-        # Open logout confirmation modal
+        print('\n> Signing out from the system...')
         self.btn_logout.click()
 
-        # Confirms logout
+        print('> Confirming sign out...')
         modal = ConfirmationModal(self.wd)
         time.sleep(1)
         modal.btn_confirm.click()
 
+        print('> Sign out success. Redirecting to the sign in page...')
         # Wait approximately for one second (until animation is completed)
         # And then redirect to sign in page
         time.sleep(1)
         return SignInPage(self.wd)
 
-    def run_edit_data(self, row_number: int) -> None:
+    def run_add_data(self) -> any:
+        """
+        Add new employee data.
+
+        This method returns the add new employee page instance.
+        """
+        from web.pages import AddEmployeePage
+
+        self.btn_add.click()
+
+        print('> Redirecting to the add new employee page...')
+        return AddEmployeePage(self.wd)
+
+    def run_edit_data(self, row_number: int) -> Tuple:
         """
         Edit data on the specific row number.
+
+        This method returns a tuple of (selected employee, edit employee page)
         """
         from web.pages import EditEmployeePage
 
+        print(f'\n> Selecting employee on row number: {row_number}...')
         dataset_size = len(self.table_dataset)
         if row_number < 1 or row_number > dataset_size:
             raise ValueError('Invalid row number.')
 
+        to_be_edited = self.table_dataset[row_number - 1]
+        to_be_edited['date'] = to_date_first(to_be_edited['date'])
+        to_be_edited['salary'] = usd_salary_to_number(to_be_edited['salary'])
+
+        print(f'> Calls edit button on row number: {row_number}...')
         row = self.tabel_rows[row_number - 1]
         btn_edit = row.find_element(By.XPATH, './/td[7]/button')
         btn_edit.click()
 
         # Wait approximately for one second (until animation is completed)
         # And then redirect to edit employee page
+        print('> Redirecting to the edit employee page...')
         time.sleep(1)
-        return EditEmployeePage(self.wd)
+        return (to_be_edited, EditEmployeePage(self.wd))
 
     def run_delete_data(self, row_number: int) -> Dict:
         """
         Delete data on the specific row number and
         returns the deleted data.
+
+        This method returns the deleted employee.
         """
+        print(f'\n> Selecting employee on row number: {row_number}...')
         dataset_size = len(self.table_dataset)
         if row_number < 1 or row_number > dataset_size:
             raise ValueError('Invalid row number.')
 
         to_be_deleted = self.table_dataset[row_number - 1]
 
-        # Delete employee
+        print(f'> Calls delete button on row number: {row_number}...')
         row = self.tabel_rows[row_number - 1]
         btn_delete = row.find_element(By.XPATH, './/td[8]/button')
         btn_delete.click()
 
-        # Confirms deletion
+        print('> Confirming action delete employee...')
         modal = ConfirmationModal(self.wd)
         time.sleep(1)
         modal.btn_confirm.click()
 
-        # Check response message
+        print('> Check delete response...')
         if not self._is_delete_success():
             raise ValueError(
                 f'Row number {row_number} can\'t be deleted!'
             )
 
         # Wait approximately for one second (until animation is completed)
+        print(f'> Employee on row {row} is deleted.')
         time.sleep(1)
-
         return to_be_deleted
 
     def _is_table_empty(self) -> bool:
