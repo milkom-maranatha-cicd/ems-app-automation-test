@@ -1,6 +1,6 @@
 # Automation Tests for Employee Management System (EMS)
 
-The automation testing respostory for the [EMS App](https://github.com/milkom-maranatha-cicd/ems-app) using Selenium for Python.
+The automation testing respository for the [EMS App](https://github.com/milkom-maranatha-cicd/ems-app) using Selenium for Python.
 
 The automation testing covers these scenarios:
 - Login, Validates employee data, Logout
@@ -16,10 +16,10 @@ The automation testing covers these scenarios:
 ## Prerequisite
 
 - Chrome web browser is installed.
-- Setting up [`chromedriver`](https://chromedriver.chromium.org/) properly. Check [this out](https://www.youtube.com/watch?v=Xjv1sY630Uc&list=PLzMcBGfZo4-n40rB1XaJ0ak1bemvlqumQ) on how you do it properly.
+- Setting up [`chromedriver`](https://chromedriver.chromium.org/) properly. Check [this out](https://www.youtube.com/watch?v=Xjv1sY630Uc&list=PLzMcBGfZo4-n40rB1XaJ0ak1bemvlqumQ) on how to do it properly.
 - In case you want to run automation tests on different browser, you need to setup a different web driver and modify the `WEB_DRIVER_TYPE` value in the `/settings.py`.
+- Python version `3.12`
 - Run `pip3 install -r requirements.txt`.
-
 
 ## How Run The Automation Tests
 
