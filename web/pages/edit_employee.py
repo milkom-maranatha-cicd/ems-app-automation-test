@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from typing import Dict
 
+from web.converters import to_date_first
 from web.driver import WebDriver
 from web.modals.basic import BasicModal
 from web.pages.form_employee import FormEmployee
@@ -81,25 +82,29 @@ class EditEmployeePage(FormEmployee):
         from web.pages import DashboardPage
 
         # Fills the edit employee form
-        if self.input_first_name.get_attribute('value') != data['first_name']:
-            self.input_first_name.clear()
-            self.input_first_name.send_keys(data['first_name'])
+        inputs = [
+            self.input_first_name, self.input_last_name,
+            self.input_email, self.input_salary, self.input_date
+        ]
+        keys = ['first_name', 'last_name', 'email', 'salary', 'date']
 
-        if self.input_last_name.get_attribute('value') != data['last_name']:
-            self.input_last_name.clear()
-            self.input_last_name.send_keys(data['last_name'])
+        for input, key in zip(inputs, keys):
+            # Normalized input values
+            input_value = input.get_attribute('value')
 
-        if self.input_email.get_attribute('value') != data['email']:
-            self.input_email.clear()
-            self.input_email.send_keys(data['email'])
+            if key == 'date':
+                current_value = to_date_first(input_value)
+            else:
+                current_value = input_value
 
-        if self.input_salary.get_attribute('value') != data['salary']:
-            self.input_salary.clear()
-            self.input_salary.send_keys(data['salary'])
+            # Change input field value when necessary
+            current_value = input.get_attribute('value')
+            new_value = data[key]
+            if current_value == new_value:
+                continue
 
-        if self.input_date.get_attribute('value') != data['date']:
-            self.input_date.clear()
-            self.input_date.send_keys(data['date'])
+            input.clear()
+            input.send_keys(new_value)
 
         # Update data
         time.sleep(1)
@@ -120,7 +125,14 @@ class EditEmployeePage(FormEmployee):
         """
         Cancel operation to edit an existing employee.
         """
+        from web.pages import DashboardPage
+
         self.btn_cancel.click()
+
+        # Wait approximately for one second (until animation is completed)
+        # And then redirect to dashboard page
+        time.sleep(1)
+        return DashboardPage(self.wd)
 
     def _is_edit_success(self) -> bool:
         """
