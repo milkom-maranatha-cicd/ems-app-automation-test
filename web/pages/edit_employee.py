@@ -55,12 +55,15 @@ class EditEmployeePage(FormEmployee):
         """
         Assert edit employee page properties.
         """
+        print('\n> Assert edit employee page title...')
         if self.label_title != 'Edit Employee':
             raise ValueError("Incorrect page's title.")
 
+        print('> Assert label of the edit button...')
         if self.label_btn_edit != 'Update':
             raise ValueError('Incorrect label for the add button.')
 
+        print('> Assert label of the cancel button...')
         if self.label_btn_cancel != 'Cancel':
             raise ValueError('Incorrect label for the cancel button.')
 
@@ -81,7 +84,7 @@ class EditEmployeePage(FormEmployee):
         """
         from web.pages import DashboardPage
 
-        # Fills the edit employee form
+        print('\n> Filling the edit employee form...')
         inputs = [
             self.input_first_name, self.input_last_name,
             self.input_email, self.input_salary, self.input_date
@@ -106,11 +109,11 @@ class EditEmployeePage(FormEmployee):
             input.clear()
             input.send_keys(new_value)
 
-        # Update data
+        print('> Updating the employee...')
         time.sleep(1)
         self.btn_edit.click()
 
-        # Check response message
+        print('> Check update response...')
         if not self._is_edit_success():
             raise ValueError(
                 'Employee data is invalid!'
@@ -118,19 +121,24 @@ class EditEmployeePage(FormEmployee):
 
         # Wait approximately for one second (until animation is completed)
         # And then redirect to dashboard page
+        print('> Update success. Redirecting to the dashboard page...')
         time.sleep(1)
         return DashboardPage(self.wd)
 
     def run_cancel(self) -> any:
         """
         Cancel operation to edit an existing employee.
+
+        This method returns the dashboard page instance.
         """
         from web.pages import DashboardPage
 
+        print('\n> Canceling action edit employee...')
         self.btn_cancel.click()
 
         # Wait approximately for one second (until animation is completed)
         # And then redirect to dashboard page
+        print('> Redirecting to the dashboard page...')
         time.sleep(1)
         return DashboardPage(self.wd)
 
