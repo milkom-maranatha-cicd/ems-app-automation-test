@@ -2,14 +2,9 @@ import time
 
 from unittest import TestCase
 
-from web.converters import (
-    to_date_first,
-    usd_salary_to_number,
-)
 from web.driver import WebDriver
 from web.pages import (
     DashboardPage,
-    EditEmployeePage,
     SignInPage,
 )
 
@@ -72,19 +67,20 @@ class TestScenario003(TestCase):
             expected_data = PREDEFINED_DATA
             self.assertCountEqual(actual_data, expected_data)
 
-        # Select to be edited employee
+        # Select employee on particular row number
         row_number = 1
+        to_be_edited, edit_employee_page = dashboard_page.run_edit_data(
+            row_number=row_number
+        )
 
-        to_be_edited = dashboard_page.table_dataset[row_number - 1]
-        to_be_edited['date'] = to_date_first(to_be_edited['date'])
-        to_be_edited['salary'] = usd_salary_to_number(to_be_edited['salary'])
+        # Assert properties of the edit employee page
+        # i.e. (page title, labels, and text buttons)
+        try:
+            edit_employee_page.assert_properties()
+        except ValueError as err:
+            self.fail(f'Edit Employee Page Assertion Failed: {str(err)}')
 
-        # Open edit employee page
-        dashboard_page.run_edit_data(row_number=row_number)
-        edit_employee_page = EditEmployeePage(self.wd)
-        edit_employee_page.assert_properties()
-
-        # Edit employee
+        # Save edited employee
         employee = {**to_be_edited}
         employee['last_name'] = 'Edited'
         employee['email'] = 'susan-edited@mail.com'
