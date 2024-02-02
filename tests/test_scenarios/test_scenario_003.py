@@ -86,7 +86,7 @@ class TestScenario003(TestCase):
         employee['email'] = 'susan-edited@mail.com'
 
         dashboard_page: DashboardPage = edit_employee_page.run_edit_employee(employee)
-        time.sleep(2)
+        time.sleep(1)
 
         # Scrolls down/up to see dataset of the table employee
         # (if needed)

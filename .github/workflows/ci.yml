@@ -1,4 +1,4 @@
-name: data-converter test suite
+name: ems-app-ci
 
 on: [push]
 
@@ -18,7 +18,7 @@ jobs:
         pip install flake8==6.1.0
         flake8 --ignore=E501,E271,E272,W602,W504 --exclude=submodules
 
-  ui-test:
+  ui-automation-test:
     needs: build
     runs-on: ubuntu-latest
     steps:
