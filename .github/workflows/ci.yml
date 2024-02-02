@@ -2,8 +2,11 @@ name: ems-app-ci
 
 on: [push]
 
+env:
+  USE_HEADLESS_BROWSER: ${{ vars.USE_HEADLESS_BROWSER }}
+
 jobs:
-  build:
+  linter-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,7 +22,7 @@ jobs:
         flake8 --ignore=E501,E271,E272,W602,W504 --exclude=submodules
 
   ui-automation-test:
-    needs: build
+    needs: linter-test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
