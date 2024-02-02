@@ -8,7 +8,6 @@ from settings import (
 
 from typing import Union
 
-
 class WebDriver:
 
     def __init__(self) -> None:
