@@ -1,4 +1,3 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -10,6 +9,7 @@ Test login negative scenario -> mencoba memasukan email dan password yang salah
 Email yang dimasukan ke dalam skenario ini adalah: email_contoh@example.com
 Password yang dimasukan ke dalam skenario ini adalah: password_contoh
 '''
+
 
 def test_login_negative_scenario():
     driver = webdriver.Edge()

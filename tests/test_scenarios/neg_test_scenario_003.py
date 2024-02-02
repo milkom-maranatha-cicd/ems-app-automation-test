@@ -1,21 +1,22 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, TimeoutException
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 
 '''
 Test edit employee negative scenario -> mencoba memasukan email tidak valid.
 Email yang tidak valid di sini yaitu email tanpa '@'
 '''
 
+
 @pytest.fixture
 def driver():
     driver = webdriver.Edge()
     yield driver
     driver.quit()
+
 
 def login(driver):
     driver.get("http://localhost:3000/crud-app")
@@ -26,6 +27,7 @@ def login(driver):
         login_button.click()
     except (ElementClickInterceptedException, TimeoutException) as e:
         print("Login button not clickable or not found. Exception: ", e)
+
 
 @pytest.mark.usefixtures("driver")
 def test_edit_employee_negative_email(driver):
