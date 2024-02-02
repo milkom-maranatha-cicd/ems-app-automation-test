@@ -15,7 +15,7 @@ class DriverType(IntEnum):
 
 
 # Selected Web Driver
-WEB_DRIVER_TYPE = DriverType.CHROME
+WEB_DRIVER_TYPE = int(os.environ.get('WEB_DRIVER_TYPE', '1'))
 
 # URL of the Single Page Application
 APP_URL = 'http://localhost:3000/'
