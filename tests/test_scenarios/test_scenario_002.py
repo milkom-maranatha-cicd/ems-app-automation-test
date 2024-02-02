@@ -87,7 +87,7 @@ class TestScenario002(TestCase):
             'date': '05/12/2023'
         }
         dashboard_page: DashboardPage = add_employee_page.run_add_employee(new_employee)
-        time.sleep(1)
+        time.sleep(2)
 
         # Scrolls down/up to see dataset of the table employee
         # (if needed)
