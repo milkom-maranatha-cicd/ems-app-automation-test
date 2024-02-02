@@ -3,7 +3,7 @@ name: data-converter test suite
 on: [push]
 
 jobs:
-  ui-test:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -13,12 +13,28 @@ jobs:
       with:
         python-version: 3.9
 
-    - name: Setup Node environment
+    - name: Analysing code with Flake8
+      run: |
+        pip install flake8==6.1.0
+        flake8 --ignore=E501,E271,E272,W602,W504 --exclude=submodules
+
+  ui-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+
+    - name: Set up Node
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Setup Chromedriver
+    - name: Set up Chromedriver
       uses: browser-actions/setup-chrome@v1
       with:
         chrome-version: 120
