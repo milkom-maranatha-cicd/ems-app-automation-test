@@ -4,6 +4,7 @@ on: [push]
 
 env:
   USE_HEADLESS_BROWSER: ${{ vars.USE_HEADLESS_BROWSER }}
+  WEB_DRIVER_TYPE: ${{ vars.WEB_DRIVER_TYPE }}
 
 jobs:
   linter-test:
@@ -38,9 +39,16 @@ jobs:
         node-version: 18
 
     - name: Set up Chromedriver
+      if: ${{ env.WEB_DRIVER_TYPE == 1 }}
       uses: browser-actions/setup-chrome@v1
       with:
         chrome-version: 120
+
+    - name: Setup Firefox
+      if: ${{ env.WEB_DRIVER_TYPE == 2 }}
+      uses: browser-actions/setup-firefox@v1
+      with:
+        firefox-version: 120
 
     - name: Install automation test dependencies
       run: |
