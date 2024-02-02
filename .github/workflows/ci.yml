@@ -3,21 +3,25 @@ name: data-converter test suite
 on: [push]
 
 jobs:
-  build:
+  ui-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: 120
 
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
         python-version: 3.9
+
+    - name: Setup Node environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Setup Chromedriver
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: 120
 
     - name: Install automation test dependencies
       run: |
@@ -31,4 +35,5 @@ jobs:
         npm install
         npm run start &
         cd ..
+        sleep 5
         ./run.sh

@@ -19,11 +19,11 @@ class WebDriver:
             opts.add_experimental_option('detach', True)
 
             if USE_HEADLESS_BROWSER is True:
+                opts.add_argument('--no-sandbox')
+                opts.add_argument('--disable-dev-shm-usage')
                 opts.add_argument('--headless')
 
-            self.driver = webdriver.Chrome(
-                options=opts
-            )
+            self.driver = webdriver.Chrome(options=opts)
 
         elif WEB_DRIVER_TYPE == DriverType.FIREFOX:
             self.driver = webdriver.Firefox()
