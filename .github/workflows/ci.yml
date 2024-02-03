@@ -81,8 +81,6 @@ jobs:
 
     - name: Setup Firefox
       uses: browser-actions/setup-firefox@v1
-      with:
-        firefox-version: 120
 
     - name: Install automation test dependencies
       run: |
