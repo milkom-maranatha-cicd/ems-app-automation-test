@@ -1,10 +1,7 @@
-from behave import given, when, then
-from web.driver import WebDriver
-from web.pages import DashboardPage, SignInPage
-from settings import APP_URL
-from tests.data.employees import PREDEFINED_DATA
-from common_steps import *
 import time
+
+from behave import when, then
+from common_steps import *  # noqa: F401, F403
 
 
 @when('I edit the first employee')

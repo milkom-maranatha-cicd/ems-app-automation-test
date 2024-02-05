@@ -1,9 +1,8 @@
 import time
-from behave import given, when, then
-from web.pages import DashboardPage, SignInPage
-from tests.data.employees import PREDEFINED_DATA
+
+from behave import when, then
 from web.converters import to_date_first, usd_salary_to_number
-from common_steps import *
+from common_steps import *  # noqa: F401, F403
 
 
 @when('I delete the first employee')

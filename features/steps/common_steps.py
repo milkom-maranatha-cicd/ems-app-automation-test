@@ -1,7 +1,7 @@
 # common_steps.py
 from behave import given, when, then
 from web.driver import WebDriver
-from web.pages import AddEmployeePage, DashboardPage, SignInPage
+from web.pages import SignInPage
 from settings import APP_URL
 import time
 

@@ -1,10 +1,8 @@
-from behave import given, when, then
-from web.driver import WebDriver
-from web.pages import AddEmployeePage, DashboardPage, SignInPage
-from settings import APP_URL
-from tests.data.employees import PREDEFINED_DATA
-from common_steps import *
 import time
+
+from behave import when, then
+from tests.data.employees import PREDEFINED_DATA
+from common_steps import *  # noqa: F401, F403
 
 
 @then('the table dataset should be initially empty or match the predefined data')
