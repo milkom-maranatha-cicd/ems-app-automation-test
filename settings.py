@@ -15,10 +15,10 @@ class DriverType(IntEnum):
 
 
 # Selected Web Driver
-WEB_DRIVER_TYPE = DriverType.CHROME
+WEB_DRIVER_TYPE = int(os.environ.get('WEB_DRIVER_TYPE', '1'))
 
 # URL of the Single Page Application
 APP_URL = 'http://localhost:3000/'
 
 # Headless browser configuration
-USE_HEADLESS_BROWSER = os.environ.get('USE_HEADLESS_BROWSER', 'false').lower() in ['true', 'yes', '1']
+ENABLE_HEADLESS_BROWSER = os.environ.get('ENABLE_HEADLESS_BROWSER', 'true').lower() in ['true', 'yes', '1']
