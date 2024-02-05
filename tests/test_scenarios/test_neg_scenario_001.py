@@ -1,8 +1,10 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from web.driver import WebDriver
+from settings import APP_URL
 
 '''
 Test login negative scenario -> mencoba memasukan email dan password yang salah
@@ -12,8 +14,10 @@ Password yang dimasukan ke dalam skenario ini adalah: password_contoh
 
 
 def test_login_negative_scenario():
-    driver = webdriver.Edge()
-    driver.get("http://localhost:3000/crud-app")
+    wd = WebDriver()
+    wd.driver.get(APP_URL)
+
+    driver = wd.driver
 
     # Tunggu hingga elemen email muncul di DOM dan clear input (karena by default sudah terisi)
     email_input = WebDriverWait(driver, 10).until(

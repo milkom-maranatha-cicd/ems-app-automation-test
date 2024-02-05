@@ -1,9 +1,12 @@
 import pytest
-from selenium import webdriver
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
+
+from web.driver import WebDriver
+from settings import APP_URL
 
 '''
 Test edit employee negative scenario -> mencoba memasukan email tidak valid.
@@ -13,7 +16,10 @@ Email yang tidak valid di sini yaitu email tanpa '@'
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Edge()
+    wd = WebDriver()
+    wd.driver.get(APP_URL)
+
+    driver = wd.driver
     yield driver
     driver.quit()
 

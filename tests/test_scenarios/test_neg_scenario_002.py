@@ -1,9 +1,12 @@
 import pytest
-from selenium import webdriver
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException
+
+from web.driver import WebDriver
+from settings import APP_URL
 
 '''
 Test add employee negative scenario -> mencoba memasukan form kosong ketika menambahkan employee
@@ -12,7 +15,10 @@ Test add employee negative scenario -> mencoba memasukan form kosong ketika mena
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Edge()
+    wd = WebDriver()
+    wd.driver.get(APP_URL)
+
+    driver = wd.driver
     yield driver
     driver.quit()
 
