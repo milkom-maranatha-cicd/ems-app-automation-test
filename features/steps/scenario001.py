@@ -1,10 +1,6 @@
-from behave import given, when, then
-from web.driver import WebDriver
-from web.pages import SignInPage
-from settings import APP_URL
+from behave import then
 from tests.data.employees import PREDEFINED_DATA
-from common_steps import *
-import time
+from common_steps import *  # noqa: F401, F403
 
 
 @then('I should see the table headers')
